@@ -6,6 +6,9 @@
   "auth": [
     [],
     [],
+    [],
+    [],
+    [],
     []
   ],
   "ledger": {
@@ -40,7 +43,7 @@
                 },
                 "durability": "persistent",
                 "val": {
-                  "bool": false
+                  "bool": true
                 }
               }
             },
@@ -87,6 +90,54 @@
             "key": {
               "vec": [
                 {
+                  "symbol": "Map"
+                }
+              ]
+            },
+            "durability": "persistent"
+          }
+        },
+        [
+          {
+            "last_modified_ledger_seq": 0,
+            "data": {
+              "contract_data": {
+                "ext": "v0",
+                "contract": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM",
+                "key": {
+                  "vec": [
+                    {
+                      "symbol": "Map"
+                    }
+                  ]
+                },
+                "durability": "persistent",
+                "val": {
+                  "map": [
+                    {
+                      "key": {
+                        "string": "Project1"
+                      },
+                      "val": {
+                        "i32": 1
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "ext": "v0"
+          },
+          4095
+        ]
+      ],
+      [
+        {
+          "contract_data": {
+            "contract": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM",
+            "key": {
+              "vec": [
+                {
                   "symbol": "Vec"
                 }
               ]
@@ -112,10 +163,10 @@
                 "val": {
                   "vec": [
                     {
-                      "string": "Project1"
+                      "string": "James"
                     },
                     {
-                      "string": "Project2"
+                      "string": "Project1"
                     }
                   ]
                 }
@@ -242,6 +293,117 @@
                 "bytes": "0000000000000000000000000000000000000000000000000000000000000001"
               },
               {
+                "symbol": "add_member_key"
+              }
+            ],
+            "data": {
+              "string": "James"
+            }
+          }
+        }
+      },
+      "failed_call": false
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": "0000000000000000000000000000000000000000000000000000000000000001",
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "log"
+              }
+            ],
+            "data": {
+              "vec": [
+                {
+                  "string": "members before adding new member: {}"
+                },
+                {
+                  "vec": []
+                }
+              ]
+            }
+          }
+        }
+      },
+      "failed_call": false
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": "0000000000000000000000000000000000000000000000000000000000000001",
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "log"
+              }
+            ],
+            "data": {
+              "vec": [
+                {
+                  "string": "members: {}"
+                },
+                {
+                  "vec": [
+                    {
+                      "string": "James"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      },
+      "failed_call": false
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": "0000000000000000000000000000000000000000000000000000000000000001",
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "fn_return"
+              },
+              {
+                "symbol": "add_member_key"
+              }
+            ],
+            "data": {
+              "vec": [
+                {
+                  "string": "James"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "failed_call": false
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": null,
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "fn_call"
+              },
+              {
+                "bytes": "0000000000000000000000000000000000000000000000000000000000000001"
+              },
+              {
                 "symbol": "add_project_key"
               }
             ],
@@ -271,7 +433,11 @@
                   "string": "projects before adding new project: {}"
                 },
                 {
-                  "vec": []
+                  "vec": [
+                    {
+                      "string": "James"
+                    }
+                  ]
                 }
               ]
             }
@@ -299,6 +465,9 @@
                 },
                 {
                   "vec": [
+                    {
+                      "string": "James"
+                    },
                     {
                       "string": "Project1"
                     }
@@ -328,6 +497,9 @@
             ],
             "data": {
               "vec": [
+                {
+                  "string": "James"
+                },
                 {
                   "string": "Project1"
                 }
@@ -353,11 +525,63 @@
                 "bytes": "0000000000000000000000000000000000000000000000000000000000000001"
               },
               {
-                "symbol": "add_project_key"
+                "symbol": "open_voting"
+              }
+            ],
+            "data": "void"
+          }
+        }
+      },
+      "failed_call": false
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": "0000000000000000000000000000000000000000000000000000000000000001",
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "fn_return"
+              },
+              {
+                "symbol": "open_voting"
+              }
+            ],
+            "data": "void"
+          }
+        }
+      },
+      "failed_call": false
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": null,
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "fn_call"
+              },
+              {
+                "bytes": "0000000000000000000000000000000000000000000000000000000000000001"
+              },
+              {
+                "symbol": "register_vote"
               }
             ],
             "data": {
-              "string": "Project2"
+              "vec": [
+                {
+                  "string": "James"
+                },
+                {
+                  "string": "Project1"
+                }
+              ]
             }
           }
         }
@@ -379,10 +603,13 @@
             "data": {
               "vec": [
                 {
-                  "string": "projects before adding new project: {}"
+                  "string": "state of members before contains()"
                 },
                 {
                   "vec": [
+                    {
+                      "string": "James"
+                    },
                     {
                       "string": "Project1"
                     }
@@ -410,17 +637,37 @@
             "data": {
               "vec": [
                 {
-                  "string": "projects: {}"
+                  "string": "member being checked:"
                 },
                 {
-                  "vec": [
-                    {
-                      "string": "Project1"
-                    },
-                    {
-                      "string": "Project2"
-                    }
-                  ]
+                  "string": "James"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "failed_call": false
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": "0000000000000000000000000000000000000000000000000000000000000001",
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "log"
+              }
+            ],
+            "data": {
+              "vec": [
+                {
+                  "string": "Vote registered for project: {}"
+                },
+                {
+                  "string": "Project1"
                 }
               ]
             }
@@ -441,18 +688,60 @@
                 "symbol": "fn_return"
               },
               {
-                "symbol": "add_project_key"
+                "symbol": "register_vote"
               }
             ],
             "data": {
-              "vec": [
-                {
-                  "string": "Project1"
-                },
-                {
-                  "string": "Project2"
-                }
-              ]
+              "bool": true
+            }
+          }
+        }
+      },
+      "failed_call": false
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": null,
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "fn_call"
+              },
+              {
+                "bytes": "0000000000000000000000000000000000000000000000000000000000000001"
+              },
+              {
+                "symbol": "check_vote_num"
+              }
+            ],
+            "data": {
+              "string": "Project1"
+            }
+          }
+        }
+      },
+      "failed_call": false
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": "0000000000000000000000000000000000000000000000000000000000000001",
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "fn_return"
+              },
+              {
+                "symbol": "check_vote_num"
+              }
+            ],
+            "data": {
+              "i32": 1
             }
           }
         }

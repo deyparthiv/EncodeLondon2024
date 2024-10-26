@@ -4,3 +4,8 @@
 
 # https://developers.stellar.org/docs/build/guides/freighter/integrate-freighter-react
 
+# BACK THE BLOCK VOTING SMART CONTRACT INTERFACE
+# is_voting_open() -> Boolean
+# open_voting()
+# close_voting()
+# register_vote(member, project)

@@ -32,7 +32,7 @@ impl VotingContract {
         log!(&env,"after setup:", env.storage().persistent().get(&MemberKeys::Vec).unwrap_or(vec![&env,String::from_str(&env,"failure to initialise member keys")]));
         log!(&env,"after setup:", env.storage().persistent().get(&ProjectKeys::Vec).unwrap_or(vec![&env,String::from_str(&env,"failure to initialise project keys")]));
     }
-
+    //------------------------------------------------------------------------------------------------------
     pub fn add_member_key(env: Env, member: String) -> Vec<String> { //add new member into storage
         //load list of members from env into function for mutation
         let mut members: Vec<String> = env.storage()
@@ -46,7 +46,7 @@ impl VotingContract {
         //env.storage().instance().extend_ttl(100, 100);
         members
     }
-
+    //------------------------------------------------------------------------------------------------------
     pub fn add_project_key(env: Env, project: String) -> Vec<String> { //add new project into storage
         let mut projects: Vec<String> = env.storage()
                                         .persistent()

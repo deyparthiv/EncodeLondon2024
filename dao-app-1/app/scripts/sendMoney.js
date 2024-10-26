@@ -39,7 +39,7 @@ var server = new StellarSdk.Horizon.Server("https://horizon-testnet.stellar.org"
 var sourceKeys = StellarSdk.Keypair.fromSecret("SDGCT6GL3F46RPD2JP4PRG3J56FRTSSGZDD4DNFT3YAG53FMO4XIXWLY" //alice private key
 );
 var destinationId = "GA7WMCGTKHYJZY5A3KUIFLZW4GLAQZS6IEF7IAYIBJHH5ASQTZ4NPHQV"; //bank public key
-function sendTo(destinationPublicKey) {
+function sendTo(destinationPublicKey, amount) {
     return __awaiter(this, void 0, void 0, function () {
         var transaction;
         return __generator(this, function (_a) {
@@ -59,7 +59,7 @@ function sendTo(destinationPublicKey) {
                 }).addOperation(StellarSdk.Operation.payment({
                     destination: destinationId,
                     asset: StellarSdk.Asset.native(),
-                    amount: "500",
+                    amount: amount,
                 })).addMemo(StellarSdk.Memo.text("Test transaction")).setTimeout(180).build();
                 transaction.sign(sourceKeys);
                 return server.submitTransaction(transaction);
@@ -73,4 +73,4 @@ function sendTo(destinationPublicKey) {
         });
     });
 }
-sendTo(destinationId);
+sendTo(destinationId, "500");

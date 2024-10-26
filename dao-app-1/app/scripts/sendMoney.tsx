@@ -7,7 +7,7 @@ var sourceKeys = StellarSdk.Keypair.fromSecret(
 );
 var destinationId = "GA7WMCGTKHYJZY5A3KUIFLZW4GLAQZS6IEF7IAYIBJHH5ASQTZ4NPHQV"; //bank public key
 
-async function sendTo(destinationPublicKey:String){
+async function sendTo(destinationPublicKey:String, amount:String){
     var transaction;
     //check if account exists
     server.loadAccount(destinationId).catch(function (error: any) {
@@ -24,7 +24,7 @@ async function sendTo(destinationPublicKey:String){
             StellarSdk.Operation.payment({
                 destination: destinationId, 
                 asset: StellarSdk.Asset.native(),
-                amount: "500",
+                amount: amount,
             }),
         ).addMemo(StellarSdk.Memo.text("Test transaction")).setTimeout(180).build();
         transaction.sign(sourceKeys);
@@ -36,4 +36,4 @@ async function sendTo(destinationPublicKey:String){
         console.error("Something went wrong!", error);
     });
 }
-sendTo(destinationId);
+sendTo(destinationId, "500");

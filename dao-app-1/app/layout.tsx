@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${ubuntu.className} bg-gray-100`}>
+      <body className={`${ubuntu.className} bg-gray-100 flex flex-col h-screen`}>
         <Header />
         {children}
         <Footer />

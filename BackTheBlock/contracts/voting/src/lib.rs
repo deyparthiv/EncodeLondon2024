@@ -1,5 +1,5 @@
 #![no_std]
-use soroban_sdk::{contract, contracttype, contractimpl, vec, Env, String, Vec,log, Symbol, symbol_short};
+use soroban_sdk::{contract, contracttype, contractimpl, vec, Env, String, Vec,log, Symbol, symbol_short, Address};
 
 //LIST TO STORE REGISTERED MEMBERS
 //const MEMBERS: Vec<String> = Vec::new(&env);
@@ -9,6 +9,8 @@ use soroban_sdk::{contract, contracttype, contractimpl, vec, Env, String, Vec,lo
 //LIST TO STORE REGISTERED MEMBERS
 
 const IS_VOTING_PERIOD:Symbol = symbol_short!("isVP"); 
+const BALANCE:Symbol = symbol_short!("bal");
+const POOL_ADDRESS:Symbol = symbol_short!("padd");
 
 #[contracttype]
 pub enum MemberKeys {
@@ -29,6 +31,8 @@ impl VotingContract {
         env.storage().persistent().set(&MemberKeys::Vec, &Vec::<String>::new(&env));
         env.storage().persistent().set(&ProjectKeys::Vec, &Vec::<String>::new(&env));
         env.storage().persistent().set(&IS_VOTING_PERIOD,&false);
+        env.storage().persistent().set(&POOL_ADDRESS, &Address::from_string(&String::from_str(&env,"GA7WMCGTKHYJZY5A3KUIFLZW4GLAQZS6IEF7IAYIBJHH5ASQTZ4NPHQV")));
+        env.storage().persistent().set(&BALANCE,Balance::get(&env, env.storage().persistent().get(&POOL_ADDRESS).unwrap_or("failure")));
         log!(&env,"after setup:", env.storage().persistent().get(&MemberKeys::Vec).unwrap_or(vec![&env,String::from_str(&env,"failure to initialise member keys")]));
         log!(&env,"after setup:", env.storage().persistent().get(&ProjectKeys::Vec).unwrap_or(vec![&env,String::from_str(&env,"failure to initialise project keys")]));
     }
@@ -73,7 +77,7 @@ impl VotingContract {
         } else {
         // if member can vote {
             //increment vote map by one
-        //}
+        //} 
         true
         }
     }
@@ -98,6 +102,9 @@ impl VotingContract {
     }
 
     //--------------------------------------------------------------------------------
+    // pub fn check_payment_to_bank_and_add_voter(env:Env, amount:String, destination_key:String) -> bool {
+        
+    // }
 
 }
 

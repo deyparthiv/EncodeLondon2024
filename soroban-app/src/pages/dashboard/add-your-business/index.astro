@@ -1,0 +1,31 @@
+---
+let hasErrors = false;
+if (Astro.request.method === "POST") {
+  try {
+    const data = await Astro.request.formData();
+    const publicKey = loadedPublicKey();
+
+    if (!publicKey) {
+      alert("Please connect your wallet first");
+      return;
+    }
+
+    const businessName = data.get("businessName");
+    const description = data.get("description");
+    const reason = data.get("reason");
+    const amount = data.get("amount");
+    if (typeof businessName !== "string" || typeof description !== "string" || typeof reason !== "string" || typeof amount !== "number") {
+        hasErrors = true;
+    }
+    if (!hasErrors) {
+      await registerBusiness({ publicKey, businessName, description, reason, amount });
+      return Astro.redirect("/success");
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
+  }
+}
+---
+

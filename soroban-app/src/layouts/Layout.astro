@@ -1,0 +1,122 @@
+---
+import '@fontsource/ubuntu';
+import { Image } from 'astro:assets';
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Astro description" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+  <body class={`bg-gray-100 flex flex-col h-screen`}>
+    <header class="my-1 border-b border-gray-300">
+      <div class="ml-5 flex">
+        <a class="flex items-center" href="/">
+          <Image
+                src="/backtheblock-logo.png"
+                width={44}
+                height={44}
+                alt="Webpage Logo"
+              />
+          <h1 class="text-black ml-3 font-black tracking-tighter text-xl">BackTheBlock</h1>
+        </a>
+        <div class="hidden w-full flex-grow sm:flex sm:w-auto mt-3">
+          <div class="sm:flex-grow ml-8 text-zinc-300 font-light text-sm">
+            <a class="block mt-4 sm:inline-block h-full sm:mt-0 pl-4 pr-4 hover:border-b-2 border-blue-600" href="/discover"><p class="text-gray-600">Discover</p></a>
+            <a class="block mt-4 sm:inline-block h-full sm:mt-0 pl-4 pr-4 hover:border-b-2 border-blue-600" href="/dashboard/donate"><p class="text-gray-600">Donate</p></a>
+            <a class="block mt-4 sm:inline-block h-full sm:mt-0 pl-4 pr-4 hover:border-b-2 border-blue-600" href="/dashboard/vote"><p class="text-gray-600">Vote</p></a>
+            <a class="block mt-4 sm:inline-block h-full sm:mt-0 pl-4 pr-4 hover:border-b-2 border-blue-600" href="/dashboard/add-your-business"><p class="text-gray-600">Add your Business</p></a>
+          </div>
+        </div>
+      </div>
+    </header>
+		<slot />
+	</body>
+</html>
+<style is:global>
+  :root {
+    --accent: 136, 58, 234;
+    --accent-light: 224, 204, 250;
+    --accent-dark: 49, 10, 101;
+    --accent-gradient: linear-gradient(
+      45deg,
+      rgb(var(--accent)),
+      rgb(var(--accent-light)) 30%,
+      white 60%
+    );
+  }
+  html {
+    font-family: Ubuntu;
+    background: #13151a;
+    background-size: 224px;
+  }
+  code {
+    font-family:
+      Menlo,
+      Monaco,
+      Lucida Console,
+      Liberation Mono,
+      DejaVu Sans Mono,
+      Bitstream Vera Sans Mono,
+      Courier New,
+      monospace;
+  }
+  button {
+    border: 1px solid rgb(var(--accent));
+    background-color: #23262d;
+    background-image: none;
+    background-size: 400%;
+    border-radius: 7px;
+    color: white;
+    cursor: pointer;
+    font-size: inherit;
+    padding: 0.5rem 1rem;
+    background-position: 100%;
+    transition: background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  button:is(:hover, :focus-within) {
+    color: black;
+    background-position: 0;
+    background-size: 400%;
+    background-image: var(--accent-gradient);
+  }
+  button:is(:disabled) {
+    color: white;
+    background: var(--accent-light);
+    cursor: not-allowed;
+  }
+
+  button:is(:disabled).loading {
+    background: linear-gradient(-45deg, #ffffff44, #ffffff22);
+    background-size: 200%;
+    animation: loading-gradient 4s linear infinite;
+  }
+  @keyframes loading-gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: -200% 50%;
+    }
+  }
+  .visually-hidden {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+</style>

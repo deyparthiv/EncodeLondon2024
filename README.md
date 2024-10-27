@@ -1,7 +1,5 @@
 # WebApp name BackTheBlock
 
-# establish time constraints for fair voting, aka can only get so many voting tokens in a certain time period
-
 # https://developers.stellar.org/docs/build/guides/freighter/integrate-freighter-react
 
 BackTheBlock is a charitable web application built on Next.js and integrated with the Soroban SDK from Stellar for managing smart contracts. The platform’s mission is to provide financial support to small local businesses through community-driven contributions.
@@ -21,5 +19,7 @@ Selected businesses are showcased on the site, allowing members to learn more ab
 BackTheBlock bridges community support with financial accessibility for local enterprises, fostering a stronger local economy through a transparent and engaging platform. 
 
 Navigate to /SmallbusinessDAO/soroban-app directory and run it with "npm run dev", connect to localhost:4321 on the browser
+
+establish time constraints for fair voting, aka can only get so many voting tokens in a certain time period
 
 Technology used: Astra, Stellar, rust smart contract soroban_sdk, React, next.js, typescript

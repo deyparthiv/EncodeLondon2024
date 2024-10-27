@@ -5,7 +5,7 @@ var server = new StellarSdk.Horizon.Server(
 
 // Keys for accounts to issue and receive the new asset
 var issuerKeys = StellarSdk.Keypair.fromSecret(
-  "SC4XUSPY3A7ODBZY72URVCIFKREIB56AX6N2UUGQW7VDKLPZ47DUQH2Z",
+  "SC4XUSPY3A7ODBZY72URVCIFKREIB56AX6N2UUGQW7VDKLPZ47DUQH2Z", 
 );
 var receivingKeys = StellarSdk.Keypair.fromSecret(
   "SDGCT6GL3F46RPD2JP4PRG3J56FRTSSGZDD4DNFT3YAG53FMO4XIXWLY",
@@ -50,7 +50,7 @@ server
         StellarSdk.Operation.payment({
           destination: receivingKeys.publicKey(),
           asset: voteAsset,
-          amount: "1",
+          amount: "100000000",
         }),
       )
       // setTimeout is required for a transaction

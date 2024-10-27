@@ -14,6 +14,7 @@ This repository uses the recommended structure for a Soroban project:
 ├── Cargo.toml
 └── README.md
 ```
+ContractID: CANT5CJMB6TGPQCHOD36WDILJUXDGIUP2HBXHGQW4WH5AHLXT7OXIWLB
 
 - New Soroban contracts can be put in `contracts`, each in their own directory.
 - Contracts should have their own `Cargo.toml` files that rely on the top-level `Cargo.toml` workspace for their dependencies.

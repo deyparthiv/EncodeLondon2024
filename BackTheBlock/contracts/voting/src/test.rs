@@ -101,4 +101,25 @@ fn test9() {
     );
 }
 
+#[test]
+fn test11() {
+    let env = Env::default();
+    let contract_id = env.register_contract(None, VotingContract);
+    let client = VotingContractClient::new(&env, &contract_id);
+    client.setup();
+    assert_eq!(
+        client.is_member_with_token(&String::from_str(&env,"GA7WMCGTKHYJZY5A3KUIFLZW4GLAQZS6IEF7IAYIBJHH5ASQTZ4NPHQV")),false
+    );
+}
+#[test]
+fn test12() {
+    let env = Env::default();
+    let contract_id = env.register_contract(None, VotingContract);
+    let client = VotingContractClient::new(&env, &contract_id);
+    client.setup();
+    assert_eq!(
+        client.is_member_with_token(&String::from_str(&env,"GA4W4K3S3E7TNURSFDBY2L47TIZI3I6KP63C4FYYEU2YZXUJ6NSMFSWY")),true
+    );
+}
+
 

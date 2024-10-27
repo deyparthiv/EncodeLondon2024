@@ -37,7 +37,7 @@ server
         .addOperation(StellarSdk.Operation.payment({
         destination: receivingKeys.publicKey(),
         asset: voteAsset,
-        amount: "1",
+        amount: "100000000",
     }))
         // setTimeout is required for a transaction
         .setTimeout(100)

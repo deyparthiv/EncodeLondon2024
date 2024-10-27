@@ -1,5 +1,7 @@
 # WebApp name BackTheBlock
 
+# “At Back the Block, we're here to make supporting local businesses as easy as tossing a boomerang. Just throw a little support, and watch the good vibes (and better coffee) come right back to you.”
+
 # https://developers.stellar.org/docs/build/guides/freighter/integrate-freighter-react
 
 BackTheBlock is a charitable web application built on Next.js and integrated with the Soroban SDK from Stellar for managing smart contracts. The platform’s mission is to provide financial support to small local businesses through community-driven contributions.

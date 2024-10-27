@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function Header() {
   return (
-    <div className="my-1 border-b border-gray-300">
+    <header className="my-1 border-b border-gray-300">
       <div className="ml-5 flex">
         <Link className="flex items-center" href="/">
           <Image
@@ -23,6 +23,6 @@ export default function Header() {
           </div>
         </div>
       </div>
-    </div>
+    </header>
   )
 }

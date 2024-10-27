@@ -1,5 +1,5 @@
 #![no_std]
-use soroban_sdk::{contract, contracttype, contractimpl, vec, Env, String, Vec,log, Symbol, symbol_short, Address, token, Val, IntoVal};
+use soroban_sdk::{contract, contracttype, contractimpl, vec, Env, String, Vec,log, Symbol, symbol_short, Address, Map};
 
 //LIST TO STORE REGISTERED MEMBERS
 //const MEMBERS: Vec<String> = Vec::new(&env);
@@ -19,10 +19,12 @@ pub enum MemberKeys {
 pub enum ProjectKeys {
     Vec,
 }
+
 #[contracttype]
-pub enum VotingMap{ //DO MAP LATER
+pub enum VoteMap {
     Map,
 }
+
 #[contract]
 pub struct VotingContract;
 
@@ -34,8 +36,8 @@ impl VotingContract {
         env.storage().persistent().set(&ProjectKeys::Vec, &Vec::<String>::new(&env));
         env.storage().persistent().set(&IS_VOTING_PERIOD,&false);
         env.storage().persistent().set(&POOL_ADDRESS, &Address::from_string(&String::from_str(&env,"GA7WMCGTKHYJZY5A3KUIFLZW4GLAQZS6IEF7IAYIBJHH5ASQTZ4NPHQV")));
-        //log!(&env,"after setup:", env.storage().persistent().get(&MemberKeys::Vec).unwrap_or(vec![&env,String::from_str(&env,"failure to initialise member keys")]));
-        //log!(&env,"after setup:", env.storage().persistent().get(&ProjectKeys::Vec).unwrap_or(vec![&env,String::from_str(&env,"failure to initialise project keys")]));
+        // log!(&env,"after setup:", env.storage().persistent().get(&MemberKeys::Vec).unwrap_or(vec![&env,String::from_str(&env,"failure to initialise member keys")]));
+        // log!(&env,"after setup:", env.storage().persistent().get(&ProjectKeys::Vec).unwrap_or(vec![&env,String::from_str(&env,"failure to initialise project keys")]));
     }
     //------------------------------------------------------------------------------------------------------
     pub fn add_member_key(env: Env, member: String) -> Vec<String> { //add new member into storage
@@ -53,6 +55,11 @@ impl VotingContract {
     }
     //------------------------------------------------------------------------------------------------------
     pub fn add_project_key(env: Env, project: String) -> Vec<String> { //add new project into storage
+        let is_voting_period:bool = env.storage().persistent().get(&IS_VOTING_PERIOD).unwrap_or(false);
+        if is_voting_period {
+            log!(&env, "adding project attempted when voting period is open");
+            return Vec::new(&env);
+        }
         let mut projects: Vec<String> = env.storage()
                                         .persistent()
                                         .get(&ProjectKeys::Vec)
@@ -64,42 +71,48 @@ impl VotingContract {
         //env.storage().instance().extend_ttl(100, 100);
         projects
     }
-    pub fn register_vote(env: Env, member_key: String, project_key: String) -> bool{
-        //if is in voting period
-        let is_voting_period:bool = env.storage().persistent().get(&IS_VOTING_PERIOD).unwrap_or(false);
-        if !is_voting_period {
-            log!(&env, "voting attempted when voting period is not open");
-            return false;
-        }
-        else if !Self::is_member_registered(&env,member_key.clone()) {
-            log!(&env, "unregisterd member tried to vote");
-            return false;
-        }
-        else if Self::is_member_with_token(env, member_key){
-            
-        }
-        true
+
+    pub fn check_vote_num(env: Env, project_key:String) -> i32 {
+        let vote_map: Map<String, i32> = env
+            .storage()
+            .persistent()
+            .get(&VoteMap::Map)
+            .unwrap_or(Map::new(&env));
+
+        // Retrieve the vote count for the project or default to 0 if not found
+        vote_map.get(project_key).unwrap_or(0)
     }
 
-    pub fn is_member_with_token(env: Env, member_key:String) -> bool {
-        let address = Address::from_string(&member_key);
-        let contract_id = Address::from_string(&String::from_str(
-            &env,"CANT5CJMB6TGPQCHOD36WDILJUXDGIUP2HBXHGQW4WH5AHLXT7OXIWLB")
-        );
+    pub fn register_vote(env: Env, member_key: String, project_key: String) -> bool {
+    // Check if voting is open
+    let is_voting_period: bool = env.storage().persistent().get(&IS_VOTING_PERIOD).unwrap_or(false);
+    if !is_voting_period {
+        log!(&env, "Voting attempted when the voting period is not open");
+        return false;
+    }
 
-        let client = 
-            token::StellarAssetClient::new(&env, &contract_id);
-        log!(&env, "Address:",&address);
-        // let response = client.try_balance(&address);
-        // if(response.is_ok())
-        //let token = env.contract(&Address::from_string(&String::from_str(
-          //  &env,"CANT5CJMB6TGPQCHOD36WDILJUXDGIUP2HBXHGQW4WH5AHLXT7OXIWLB")
-        //).clone());
-        // let balance = client.balance(&contract_id);
-        // //let balance = token.invoke::<i128>(&symbol_short!("balance"),(&address,));
-        // log!(&env, "Balance?:", balance);
-        // return true;
-        return client.authorized(&address);
+    // Check if the member is registered
+    if !Self::is_member_registered(&env, member_key) {
+        log!(&env, "Unregistered member tried to vote");
+        return false;
+    }
+
+    // Load or initialize vote map
+    let mut vote_map: Map<String, i32> = env
+        .storage()
+        .persistent()
+        .get(&VoteMap::Map)
+        .unwrap_or(Map::new(&env));
+
+    // Increment vote count for the project
+    let votes = vote_map.get(project_key.clone()).unwrap_or(0);
+    vote_map.set(project_key.clone(), votes + 1);  // Use `&project_key` here
+
+    // Save updated map back to storage
+    env.storage().persistent().set(&VoteMap::Map, &vote_map);
+    log!(&env, "Vote registered for project: {}", project_key.clone());
+
+    true
     }
 
     pub fn is_member_registered(env: &Env, member_key: String) -> bool {
@@ -116,6 +129,13 @@ impl VotingContract {
     }
     pub fn open_voting(env:Env) -> () {
         env.storage().persistent().set(&IS_VOTING_PERIOD, &true);
+
+        let vote_map: Map<String, i32> = env.storage()
+            .persistent()
+            .get(&VoteMap::Map)
+            .unwrap_or(Map::new(&env));
+        env.storage().persistent().set(&VoteMap::Map, &vote_map);
+
     }
     pub fn close_voting(env:Env) -> () {
         env.storage().persistent().set(&IS_VOTING_PERIOD, &false);

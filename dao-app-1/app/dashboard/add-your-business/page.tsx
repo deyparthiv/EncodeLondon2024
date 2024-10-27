@@ -1,46 +1,24 @@
-"use client";
+"use client"
 
-import React, { useState } from "react";
-
+import React from "react";
+import { submitBusiness } from "./actions.js";
+import { useFormState } from "react-dom";
+import { redirect } from "next/navigation.js";
+  
 export default function AddBusinessPage() {
-    const [businessName, setBusinessName] = useState("");
-    const [owners, setOwners] = useState("");
-    const [description, setDescription] = useState("");
-    const [reason, setReason] = useState("");
-    const [amount, setAmount] = useState("");
-    const [logo, setLogo] = useState<File | null>(null);
-    const [successMessage, setSuccessMessage] = useState(false);
+    const [state, formAction] = useFormState(submitBusiness, null);
 
-    const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files && event.target.files[0]) {
-            setLogo(event.target.files[0]);
-        }
-    };
-
-    const submitBusiness = () => {
-        if (!businessName || !owners || !description || !reason || !amount || parseFloat(amount) <= 0 || !logo) {
-            alert("Please fill in all fields and upload a valid logo.");
-            return;
-        }
-
-        setSuccessMessage(true);
-
-        // Reset form fields
-        setBusinessName("");
-        setOwners("");
-        setDescription("");
-        setReason("");
-        setAmount("");
-        setLogo(null);
-    };
+    if (state == "success") {
+        redirect("/success")
+    }
 
     return (
-        <div className="bg-gray-100 min-h-screen flex items-center justify-center">
-            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <div className="bg-gray-100 my-10 flex justify-center">
+            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md text-black">
                 <h1 className="text-3xl font-bold text-center text-gray-800 mb-4">
-                    Add a New Business
+                    Add your Business
                 </h1>
-                <form className="space-y-6">
+                <form action={formAction} className="space-y-6">
                     {/* Business Name */}
                     <div>
                         <label htmlFor="businessName" className="block text-gray-700 font-medium mb-1">
@@ -48,40 +26,22 @@ export default function AddBusinessPage() {
                         </label>
                         <input
                             type="text"
+                            name="businessName"
                             id="businessName"
-                            value={businessName}
-                            onChange={(e) => setBusinessName(e.target.value)}
                             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             required
                             placeholder="Enter business name"
                         />
                     </div>
 
-                    {/* Owners */}
-                    <div>
-                        <label htmlFor="owners" className="block text-gray-700 font-medium mb-1">
-                            Owners
-                        </label>
-                        <input
-                            type="text"
-                            id="owners"
-                            value={owners}
-                            onChange={(e) => setOwners(e.target.value)}
-                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                            required
-                            placeholder="Enter names of owners"
-                        />
-                    </div>
-
                     {/* Description of Activities */}
                     <div>
                         <label htmlFor="description" className="block text-gray-700 font-medium mb-1">
-                            What are they doing?
+                            Describe your business
                         </label>
                         <textarea
+                            name="description"
                             id="description"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
                             rows={3}
                             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             required
@@ -92,69 +52,46 @@ export default function AddBusinessPage() {
                     {/* Reason for Donation */}
                     <div>
                         <label htmlFor="reason" className="block text-gray-700 font-medium mb-1">
-                            Reason to get a donation
+                            How will you use the money?
                         </label>
                         <textarea
+                            name="reason"
                             id="reason"
-                            value={reason}
-                            onChange={(e) => setReason(e.target.value)}
                             rows={3}
                             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             required
-                            placeholder="Why does the business need a donation?"
+                            placeholder=""
                         ></textarea>
                     </div>
 
                     {/* Amount of Supported Money */}
                     <div>
                         <label htmlFor="amount" className="block text-gray-700 font-medium mb-1">
-                            Amount of Supported Money (GBP)
+                            How much does your business need? (Lumins)
                         </label>
                         <input
+                            name="amount"
                             type="number"
                             id="amount"
-                            value={amount}
-                            onChange={(e) => setAmount(e.target.value)}
                             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             required
-                            placeholder="Enter the amount in GBP"
+                            placeholder=""
                         />
-                    </div>
-
-                    {/* Logo Upload */}
-                    <div>
-                        <label htmlFor="logo" className="block text-gray-700 font-medium mb-1">
-                            Upload Logo
-                        </label>
-                        <input
-                            type="file"
-                            id="logo"
-                            onChange={handleLogoUpload}
-                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                            required
-                            accept="image/*"
-                        />
-                        {logo && (
-                            <p className="text-sm text-gray-500 mt-2">
-                                Selected file: {logo.name}
-                            </p>
-                        )}
                     </div>
 
                     {/* Submit Button */}
                     <button
-                        type="button"
-                        onClick={submitBusiness}
+                        type="submit"
                         className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 rounded-lg transition"
                     >
                         Submit Business
                     </button>
                 </form>
 
-                {/* Success Message */}
-                {successMessage && (
-                    <div className="mt-4 text-green-600 font-medium text-center">
-                        Business added successfully!
+                {/* Error Message */}
+                {state == "error" && (
+                    <div className="mt-4 text-red-500 font-medium">
+                        Please fill in all fields and upload a valid logo!
                     </div>
                 )}
             </div>

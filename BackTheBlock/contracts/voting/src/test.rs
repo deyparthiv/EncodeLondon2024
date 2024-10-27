@@ -1,7 +1,7 @@
 #![cfg(test)]
 
 use super::*;
-use soroban_sdk::{vec, Env, String};
+use soroban_sdk::{vec, Env, String, Map};
 
 #[test]
 fn test1() {
@@ -88,19 +88,40 @@ fn test8() {
         client.is_voting_open(),true
     );
 }
+// #[test]
+// fn test9() {
+//     let env = Env::default();
+//     let contract_id = env.register_contract(None, VotingContract);
+//     let client = VotingContractClient::new(&env, &contract_id);
+//     client.setup();
+//     client.open_voting();
+//     let vote_success = client.register_vote(member_key);
+//     assert_eq!(
+//         client.is_voting_open(),false
+//     );
+// }
+
 #[test]
-fn test9() {
+fn test10() {
     let env = Env::default();
     let contract_id = env.register_contract(None, VotingContract);
     let client = VotingContractClient::new(&env, &contract_id);
     client.setup();
+    let member_key = String::from_str(&env, "James");
+    let project_key = String::from_str(&env, "Project1");
+
+    client.add_member_key(&member_key);
+    client.add_project_key(&project_key);
     client.open_voting();
-    client.close_voting();
-    assert_eq!(
-        client.is_voting_open(),false
-    );
+    let vote_success = client.register_vote(&member_key, &project_key);
+    assert_eq!(vote_success, true, "Vote should be successfully registered.");
+
+    // Check the vote count for the project
+    let vote_num = client.check_vote_num(&project_key);
+    assert_eq!(vote_num, 1, "Vote count for Project1 should be 1 after one vote.");
 }
 
+<<<<<<< HEAD
 #[test]
 fn test11() {
     let env = Env::default();
@@ -123,3 +144,5 @@ fn test12() {
 }
 
 
+=======
+>>>>>>> 99074908cc682b06f085bd2ee1cbfc924d26d885

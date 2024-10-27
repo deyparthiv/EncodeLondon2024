@@ -1,7 +1,7 @@
 #![cfg(test)]
 
 use super::*;
-use soroban_sdk::{vec, Env, String, Map};
+use soroban_sdk::{vec, Env, String};
 
 #[test]
 fn test1() {
@@ -31,6 +31,7 @@ fn test3() {
     let contract_id = env.register_contract(None, VotingContract);
     let client = VotingContractClient::new(&env, &contract_id);
     client.setup();
+    client.add_member_key(&String::from_str(&env,"James"));
     assert_eq!(
        client.add_project_key(&String::from_str(&env,"Project1")), vec![&env,String::from_str(&env,"Project1"),]
     );
@@ -88,61 +89,59 @@ fn test8() {
         client.is_voting_open(),true
     );
 }
-// #[test]
-// fn test9() {
-//     let env = Env::default();
-//     let contract_id = env.register_contract(None, VotingContract);
-//     let client = VotingContractClient::new(&env, &contract_id);
-//     client.setup();
-//     client.open_voting();
-//     let vote_success = client.register_vote(member_key);
-//     assert_eq!(
-//         client.is_voting_open(),false
-//     );
-// }
-
 #[test]
-fn test10() {
+fn test9() {
     let env = Env::default();
     let contract_id = env.register_contract(None, VotingContract);
     let client = VotingContractClient::new(&env, &contract_id);
     client.setup();
-    let member_key = String::from_str(&env, "James");
-    let project_key = String::from_str(&env, "Project1");
-
-    client.add_member_key(&member_key);
-    client.add_project_key(&project_key);
     client.open_voting();
-    let vote_success = client.register_vote(&member_key, &project_key);
-    assert_eq!(vote_success, true, "Vote should be successfully registered.");
-
-    // Check the vote count for the project
-    let vote_num = client.check_vote_num(&project_key);
-    assert_eq!(vote_num, 1, "Vote count for Project1 should be 1 after one vote.");
+    client.close_voting();
+    assert_eq!(
+        client.is_voting_open(),false
+    );
 }
 
-<<<<<<< HEAD
 #[test]
-fn test11() {
+fn test10() { //remove member
     let env = Env::default();
     let contract_id = env.register_contract(None, VotingContract);
     let client = VotingContractClient::new(&env, &contract_id);
     client.setup();
+    client.add_member_key(&String::from_str(&env,"James"));
+    client.remove_member(&String::from_str(&env,"James"));
     assert_eq!(
-        client.is_member_with_token(&String::from_str(&env,"GA7WMCGTKHYJZY5A3KUIFLZW4GLAQZS6IEF7IAYIBJHH5ASQTZ4NPHQV")),false
+        client.is_member_registered(&String::from_str(&env,"James")),false
     );
 }
+
 #[test]
-fn test12() {
+fn test11() { //voting checks
     let env = Env::default();
     let contract_id = env.register_contract(None, VotingContract);
     let client = VotingContractClient::new(&env, &contract_id);
     client.setup();
+    client.add_member_key(&String::from_str(&env,"James"));
     assert_eq!(
-        client.is_member_with_token(&String::from_str(&env,"GA4W4K3S3E7TNURSFDBY2L47TIZI3I6KP63C4FYYEU2YZXUJ6NSMFSWY")),true
+        client.is_member_registered(&String::from_str(&env,"James")),true
+    );
+    assert_eq!(
+        client.is_member_registered(&String::from_str(&env,"Max")),false
+    );
+    client.add_project_key(&String::from_str(&env,"PR1"));
+    assert_eq!(
+        client.is_project_registered(&String::from_str(&env,"James")),false
+    );
+    assert_eq!(
+        client.is_project_registered(&String::from_str(&env,"PR1")),true
+    );
+    client.open_voting();
+    client.register_vote(&String::from_str(&env,"James"),&String::from_str(&env,"PR1"));
+    assert_eq!(
+        client.check_vote_num(&String::from_str(&env,"James")),1
     );
 }
 
 
-=======
->>>>>>> 99074908cc682b06f085bd2ee1cbfc924d26d885
+
+

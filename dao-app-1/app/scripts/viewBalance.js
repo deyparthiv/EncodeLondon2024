@@ -38,7 +38,34 @@ var StellarSdk = require("stellar-sdk");
 var server = new StellarSdk.Horizon.Server("https://horizon-testnet.stellar.org");
 function getBalance(accountId) {
     return __awaiter(this, void 0, void 0, function () {
-        var account, error_1;
+        var account, _a, _b, error_1;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
+                case 0:
+                    _c.trys.push([0, 3, , 4]);
+                    return [4 /*yield*/, server.loadAccount(accountId)];
+                case 1:
+                    account = _c.sent();
+                    _b = (_a = console).log;
+                    return [4 /*yield*/, account.balances];
+                case 2:
+                    _b.apply(_a, [_c.sent()]);
+                    return [3 /*break*/, 4];
+                case 3:
+                    error_1 = _c.sent();
+                    console.error("Error loading balance: ", error_1);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+var publicId = 'GA4W4K3S3E7TNURSFDBY2L47TIZI3I6KP63C4FYYEU2YZXUJ6NSMFSWY';
+var publicId2 = 'GA7WMCGTKHYJZY5A3KUIFLZW4GLAQZS6IEF7IAYIBJHH5ASQTZ4NPHQV';
+//getBalance(publicId);
+function isAccountAbleToVote(accountId) {
+    return __awaiter(this, void 0, void 0, function () {
+        var account, balances, isAbleToVote, error_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -46,18 +73,26 @@ function getBalance(accountId) {
                     return [4 /*yield*/, server.loadAccount(accountId)];
                 case 1:
                     account = _a.sent();
-                    account.balances.forEach(function (balance) {
-                        console.log("Type: ".concat(balance.asset_type, ",Balance ").concat(balance.balance));
+                    balances = account.balances;
+                    isAbleToVote = false;
+                    balances.forEach(function (balance) {
+                        if (balance.asset_type == 'credit_alphanum12') {
+                            if (balance.asset_code == 'JPVMToken' && parseFloat(balance.balance) > 0) {
+                                isAbleToVote = true;
+                            }
+                        }
                     });
-                    return [3 /*break*/, 3];
+                    console.log(isAbleToVote);
+                    return [2 /*return*/, isAbleToVote];
                 case 2:
-                    error_1 = _a.sent();
-                    console.error("Error loading balance: ", error_1);
-                    return [3 /*break*/, 3];
+                    error_2 = _a.sent();
+                    console.error("Error loading balance: ", error_2);
+                    console.log(false);
+                    return [2 /*return*/, false];
                 case 3: return [2 /*return*/];
             }
         });
     });
 }
-var publicId = 'GA4W4K3S3E7TNURSFDBY2L47TIZI3I6KP63C4FYYEU2YZXUJ6NSMFSWY';
-getBalance(publicId);
+isAccountAbleToVote(publicId);
+isAccountAbleToVote(publicId2);

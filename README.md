@@ -1,6 +1,5 @@
 # WebApp name BackTheBlock
-
-# “At Back the Block, we're here to make supporting local businesses as easy as tossing a boomerang. Just throw a little support, and watch the good vibes (and better coffee) come right back to you.”
+# *This application is still under developement*
 
 # https://developers.stellar.org/docs/build/guides/freighter/integrate-freighter-react
 
